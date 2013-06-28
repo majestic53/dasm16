@@ -27,7 +27,7 @@ __dasm16 [-h | -v] [-o OUTPUT] input...__
 * __-o__ OUTPUT: Specify output file path
 * input: Specify input file path
 
-###Example
+###Usage Example
 
 For the sake of this example, we will assume that we have an input file called 
 __code.asm__. If we wish to compile this file into a binary called __out.bin__
