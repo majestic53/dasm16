@@ -1,0 +1,65 @@
+basic_opcode ::= SET | ADD | SUB | MUL | MLI | DIV | DVI | MOD | MDI
+	| AND | BOR | XOR | SHR | ASR | SHL | IFB | IFC 
+	| IFE | IFN | IFG | IFA | IFL | IFU | ADX | SBX
+	| STI | STD
+
+comment ::= ;.*\n
+
+directive_type ::= DAT
+
+generic_register ::= A | B | C | X | Y | Z | I | J
+
+hex_integer ::= 0x[0-9a-fA-F]+
+
+integer ::= [0-9]+
+
+label ::= [_a-zA-Z][_a-zA-Z0-9]*
+
+operator ::= PEEK | PICK | POP | PUSH
+
+special_opcode ::= JSR | INT | IAG | IAS | RFI | IAQ | HWN | HWQ
+	| HWI
+
+string ::= \".*\"
+	
+symbol ::= , | : | # | [ | ] | ( | ) | +
+
+system_register ::= EX | IA | PC | SP
+
+***********************
+
+command ::= <basic_opcode> <operand_b> <operator_a>
+	| <special_opcode> <operator_a>
+	
+directive ::= <directive_type> <value_list>
+
+label_directive ::= : <label>
+
+literal ::= <integer> | <hex_integer>
+
+operand ::= <generic_register>						; register
+	| [ <generic_register> ]						; indirect register
+	| [ <generic_register> + <static_value> ]		; indirect register + next-word
+	| PEEK											; peek operator
+	| PICK ( <static_value> )						; pick(n) operator
+	| PICK <static_value>
+	| SP											; sp system register
+	| PC											; pc system register
+	| EX											; ex system register
+	| [ <static_value> ]							; indirect next-word literal
+	| <static_value>								; next-word literal
+
+operand_a ::= <operand>
+	| # <static_value>								; literal value (-1 - 31)
+	| POP											; pop operator
+
+operand_b ::= <operand>
+	| PUSH											; push operator
+	
+statement ::= <command> | <directive> | <label_directive>
+
+static_value ::= <label_directive> | <literal>
+
+value ::= <static_value> | <string>
+
+value_list ::= <value> , <value_list> | <value>

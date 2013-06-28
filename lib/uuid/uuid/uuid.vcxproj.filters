@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{fba9c598-f659-41e9-b871-fb8621ee6f6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="generator">
+      <UniqueIdentifier>{06e12449-c5a8-4df6-8e4b-c35f9cc42f22}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\type.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\version.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\uuid_generator.h">
+      <Filter>generator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\uuid_generator_type.h">
+      <Filter>generator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\uuid.h" />
+    <ClInclude Include="..\uuid_type.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\uuid_generator.cpp">
+      <Filter>generator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\uuid.cpp" />
+  </ItemGroup>
+</Project>

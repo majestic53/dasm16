@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{7d7be63c-67df-469d-9a73-d1f503335507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assembler">
+      <UniqueIdentifier>{14ba76a2-e0f5-44dc-9929-a3ce8e62842e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\version.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\type.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dasm16.h" />
+    <ClInclude Include="..\lang_def.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lexer_base.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lexer_base_type.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dasm16_type.h" />
+    <ClInclude Include="..\lexer.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lexer_type.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\token.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\token_type.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parser.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parser_type.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\node.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\node_type.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\assembler.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\assembler_type.h">
+      <Filter>assembler</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\dasm16.cpp" />
+    <ClCompile Include="..\lexer_base.cpp">
+      <Filter>assembler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lang_def.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lexer.cpp">
+      <Filter>assembler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\token.cpp">
+      <Filter>assembler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\parser.cpp">
+      <Filter>assembler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\node.cpp">
+      <Filter>assembler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\assembler.cpp">
+      <Filter>assembler</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
