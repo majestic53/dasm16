@@ -49,29 +49,28 @@ Build successful.
 Architecture
 ========
 
-Internally, DASM16 consists of three major pieces (that can be thought of as a stack), that 
+DASM16 consists of three major pieces (that can be thought of as a stack), which 
 perform the three basic steps required for assembly.
 
 ![Software stack](http://dl.dropboxusercontent.com/u/6410544/dasm16/stack.png)
 
-* The first step, called 'tokenizing', breaks the the assembly (source) file into descrete pieces
-through a process known as lexical analysis. These descrete pieces of code produced through this
-process are called tokens, and are used to check for syntactic/symantic correctness in the 
-following steps.
+* The first step, breaks the the assembly file into descrete pieces through a process known 
+as _lexical analysis_. These descrete pieces of code are called tokens, and are used to check 
+for correctness.
 
 ![Token generation](http://dl.dropboxusercontent.com/u/6410544/dasm16/lexer.png)
 
-* Once the code has been broken into tokens, the next step is to determine if they are placed in the
-right order. This is what is known as syntactic analysis, or checking that the code is correctly 
-formatted. Using this process, the tokens are used to create trees of tokens, called syntax trees.
+* Once the code has been broken into tokens, the next step is to determine if the tokens are placed 
+in the correct order. This is what is known as _syntactic analysis_, or checking that the code's
+syntax is correct. Through this process, the tokens generate trees of tokens, called _syntax trees_.
 
 ![Syntax tree generation](http://dl.dropboxusercontent.com/u/6410544/dasm16/parser.png)
 
 * The finaly step is to generate the code based off the syntax trees generated earlier. To do this, we
-must "walk over" the trees. During this process, we perform symantic analysis, or checking that the 
+must "walk over" the trees. During this process, we perform _symantic analysis_, or checking that the 
 syntax trees make sense.
 
-If all goes well, the binary code (output) will be generated successfully, and written to a file.
+If all goes well, the binary code will be generated successfully, and written to a file.
 
 Example
 ========
