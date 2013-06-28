@@ -54,20 +54,20 @@ perform the three basic steps required for assembly.
 
 ![Software stack](http://dl.dropboxusercontent.com/u/6410544/dasm16/stack.png)
 
-1. The first step, called 'tokenizing', breaks the the assembly (source) file into descrete pieces
+* The first step, called 'tokenizing', breaks the the assembly (source) file into descrete pieces
 through a process known as lexical analysis. These descrete pieces of code produced through this
-procerss are called tokens, and are used to check for syntactic/symantic correctness in the 
+process are called tokens, and are used to check for syntactic/symantic correctness in the 
 following steps.
 
 ![Token generation](http://dl.dropboxusercontent.com/u/6410544/dasm16/lexer.png)
 
-2. Once the code has been broken into tokens, the next step is to determine if they are placed in the
+* Once the code has been broken into tokens, the next step is to determine if they are placed in the
 right order. This is what is known as syntactic analysis, or checking that the code is correctly 
 formatted. Using this process, the tokens are used to create trees of tokens, called syntax trees.
 
 ![Syntax tree generation](http://dl.dropboxusercontent.com/u/6410544/dasm16/parser.png)
 
-3. The finaly step is to generate the code based off the syntax trees generated earlier. To do this, we
+* The finaly step is to generate the code based off the syntax trees generated earlier. To do this, we
 must "walk over" the trees. During this process, we perform symantic analysis, or checking that the 
 syntax trees make sense.
 
