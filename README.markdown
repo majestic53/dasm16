@@ -5,7 +5,7 @@ An assembler for DCPU-16 development, written in C++.
 
 1. [Introduction](https://github.com/majestic53/dasm16#introduction)
 2. [Usage](https://github.com/majestic53/dasm16#usage)
-3. [How It Works](https://github.com/majestic53/dasm16#how_it_works)
+3. [Architecture](https://github.com/majestic53/dasm16#architecture)
 4. [Example](https://github.com/majestic53/dasm16#example)
 5. [Syntax](https://github.com/majestic53/dasm16#syntax)
 6. [License](https://github.com/majestic53/dasm16#license)
@@ -46,7 +46,7 @@ Writing to file... Done.
 Build successful.
 ```
 
-How It Works
+Architecture
 ========
 
 Internally, DASM16 consists of three major pieces (that can be thought of as a stack), that 
