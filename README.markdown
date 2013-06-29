@@ -5,9 +5,18 @@ An assembler for DCPU-16 development, written in C++.
 
 1. [Introduction](https://github.com/majestic53/dasm16#introduction)
 2. [Usage](https://github.com/majestic53/dasm16#usage)
+	* [Usage Example](https://github.com/majestic53/dasm16#usage-example)
 3. [Architecture](https://github.com/majestic53/dasm16#architecture)
+	* [Lexer](https://github.com/majestic53/dasm16#lexer)
+	* [Parser](https://github.com/majestic53/dasm16#parser)
+	* [Code Generator](https://github.com/majestic53/dasm16#code-generator)
 4. [Example](https://github.com/majestic53/dasm16#example)
 5. [Syntax](https://github.com/majestic53/dasm16#syntax)
+	* [Addressing Modes](https://github.com/majestic53/dasm16#addressing-modes)
+	* [Commands](https://github.com/majestic53/dasm16#commands)
+	* [Directives](https://github.com/majestic53/dasm16#directives)
+	* [Registers](https://github.com/majestic53/dasm16#registers)
+	* [Assembly BNF](https://github.com/majestic53/dasm16#assembly-bnf)
 6. [License](https://github.com/majestic53/dasm16#license)
 
 Introduction
@@ -49,29 +58,35 @@ Build successful.
 Architecture
 ========
 
-DASM16 consists of three major pieces (that can be thought of as a stack), which 
+DASM16 consists of three major pieces: Lexer, Parser, and Code Generator, which 
 perform the basic steps required for assembly.
 
 ![Software stack](http://dl.dropboxusercontent.com/u/6410544/dasm16/stack.png)
 
-* The first step, breaks the the assembly file into descrete pieces, through a process known 
+###Lexer
+
+The first step, breaks the the assembly file into descrete pieces, through a process known 
 as _lexical analysis_. These descrete pieces are called tokens, and are used to check 
 for code correctness in the next step.
 
 ![Token generation](http://dl.dropboxusercontent.com/u/6410544/dasm16/lexer.png)
 
-* Once the code has been broken into tokens, the next step is to determine if the tokens are 
+###Parser
+
+Once the code has been broken into tokens, the next step is to determine if the tokens are 
 in the correct order. This is known as _syntactic analysis_, or checking that the code's
 syntax is correct. During this step, the tokens are placed into tree structures, called _syntax trees_.
 These trees give the tokens structure, as well as imply precedence.
 
 ![Syntax tree generation](http://dl.dropboxusercontent.com/u/6410544/dasm16/parser.png)
 
-* The finaly step is to generate the binary code using the syntax trees generated earlier. To do this, we
+###Code Generator
+
+The finaly step is to generate the binary code using the syntax trees generated earlier. To do this, we
 must "walk over" the trees. During this process, we perform _symantic analysis_, or checking that the 
 syntax trees make sense.
 
-* If the code is syntactically/semantically sound, the assembler will produce a file containing binary
+If the code is syntactically/semantically sound, the assembler will produce a file containing binary
 representation of the assembly code.
 
 Example
