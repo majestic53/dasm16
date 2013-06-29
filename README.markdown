@@ -29,8 +29,8 @@ __dasm16 [-h | -v] [-o OUTPUT] input...__
 
 ###Usage Example
 
-For the sake of this example, we will assume that we have an input file called 
-__code.asm__. If we wish to compile this file into a binary called __out.bin__
+For the sake of this example, assume that we have an assembly file called 
+__code.asm__. If we wish to compile this code into a binary file called __out.bin__
 with verbose output, we would use the command below:
 
 ```
@@ -50,38 +50,39 @@ Architecture
 ========
 
 DASM16 consists of three major pieces (that can be thought of as a stack), which 
-perform the three basic steps required for assembly.
+perform the basic steps required for assembly.
 
 ![Software stack](http://dl.dropboxusercontent.com/u/6410544/dasm16/stack.png)
 
-* The first step, breaks the the assembly file into descrete pieces through a process known 
-as _lexical analysis_. These descrete pieces of code are called tokens, and are used to check 
-for correctness.
+* The first step, breaks the the assembly file into descrete pieces, through a process known 
+as _lexical analysis_. These descrete pieces are called tokens, and are used to check 
+for code correctness in the next step.
 
 ![Token generation](http://dl.dropboxusercontent.com/u/6410544/dasm16/lexer.png)
 
-* Once the code has been broken into tokens, the next step is to determine if the tokens are placed 
-in the correct order. This is what is known as _syntactic analysis_, or checking that the code's
-syntax is correct. Through this process, the tokens generate trees of tokens, called _syntax trees_.
+* Once the code has been broken into tokens, the next step is to determine if the tokens are 
+in the correct order. This is known as _syntactic analysis_, or checking that the code's
+syntax is correct. During this step, the tokens are placed into tree structures, called _syntax trees_.
+These trees give the tokens structure, as well as imply precedence.
 
 ![Syntax tree generation](http://dl.dropboxusercontent.com/u/6410544/dasm16/parser.png)
 
-* The finaly step is to generate the code based off the syntax trees generated earlier. To do this, we
+* The finaly step is to generate the binary code using the syntax trees generated earlier. To do this, we
 must "walk over" the trees. During this process, we perform _symantic analysis_, or checking that the 
 syntax trees make sense.
 
-If all goes well, the binary code will be generated successfully, and written to a file.
+* If the code is syntactically/semantically sound, the assembler will produce a file containing binary
+representation of the assembly code.
 
 Example
 ========
 
-For this example, we will look at the classic Hello World example, showing the 
-entire process of compilation. First step, create a new file; call it __HelloWorld.asm__.
+Now, time for an example. We will take a look at the classic Hello World example, showing the 
+entire process of compilation. The first step is to create a new file, calling it __HelloWorld.asm__.
 This file will hold our assembly code, and will be used as an input file during 
 compilation. 
 
-Once you've created this file, copy and paste the code below into your newly created 
-Hello World assembly file.
+Once you've created this file, copy and paste the code below.
 
 ```asm
 ; Assembler test for DCPU
@@ -105,14 +106,14 @@ Hello World assembly file.
 ```
 
 Now that we have the code, we are ready to compile. Save the file and open a console 
-window in the same directly. Next, use the command below to compile your code.
+window in the same directly. Next, use the command below to compile your code (making
+sure that _dasm16.exe_ is also in the same directory).
 
 ```
 dasm16 -v -o HelloWorld.bin HelloWorld.asm
 ```
 
-You should see output in the console window similar to this (notice that the output shows in
-the console windows when using verbose mode):
+You should see output in the console window similar to this:
 
 ```
 DASM16 1.0.1326 (rev. 7, Jun 27 2013, 20:24:38)
@@ -128,7 +129,8 @@ Build successful. (0.015 sec.)
 ```
 
 Thats it! You should now see a file called _HelloWorld.bin_ in the same directory
-as your assembly file.
+as your assembly file. To run this binary file, fire up your favorite DCPU-16 emulator 
+and have fun!
 
 Syntax
 ========
@@ -162,6 +164,7 @@ The DCPU-16 processor supports two different types of opcodes:
 
 ```
 <opcode> <operator_b>, <operator_a>
+-----------------------------------
 
 SET | ADD | SUB | MUL | MLI | DIV | DVI | MOD | MDI
 | AND | BOR | XOR | SHR | ASR | SHL | IFB | IFC 
@@ -173,15 +176,19 @@ SET | ADD | SUB | MUL | MLI | DIV | DVI | MOD | MDI
 
 ```
 <opcode> <operator_a>
+---------------------
 
 JSR | INT | IAG | IAS | RFI | IAQ | HWN | HWQ
 ```
 
 ###Directives
 
-The DASM16 supports a series of assembler directives with the format: <directive> <value_list>
+The DASM16 supports a series of assembler directives with the format:
 
 ```
+<directive> <value_list>
+------------------------
+
 DAT
 ```
 
