@@ -10,13 +10,13 @@ An assembler for DCPU-16 development, written in C++.
 	* [Lexer](https://github.com/majestic53/dasm16#lexer)
 	* [Parser](https://github.com/majestic53/dasm16#parser)
 	* [Code Generator](https://github.com/majestic53/dasm16#code-generator)
-4. [Example](https://github.com/majestic53/dasm16#example)
-5. [Syntax](https://github.com/majestic53/dasm16#syntax)
+4. [Syntax](https://github.com/majestic53/dasm16#syntax)
 	* [Addressing Modes](https://github.com/majestic53/dasm16#addressing-modes)
 	* [Commands](https://github.com/majestic53/dasm16#commands)
 	* [Directives](https://github.com/majestic53/dasm16#directives)
 	* [Registers](https://github.com/majestic53/dasm16#registers)
 	* [Assembly BNF](https://github.com/majestic53/dasm16#assembly-bnf)
+5. [Example](https://github.com/majestic53/dasm16#example)
 6. [License](https://github.com/majestic53/dasm16#license)
 
 Introduction
@@ -88,64 +88,6 @@ syntax trees make sense.
 
 If the code is syntactically/semantically sound, the assembler will produce a file containing binary
 representation of the assembly code.
-
-Example
-========
-
-Now, time for an example. We will take a look at the classic Hello World example, showing the 
-entire process of compilation. The first step is to create a new file, calling it __HelloWorld.asm__.
-This file will hold our assembly code, and will be used as an input file during 
-compilation. 
-
-Once you've created this file, copy and paste the code below.
-
-```asm
-; Assembler test for DCPU
-; by Markus Persson
-
-	set a, 0xbeef
-	set [0x1000], a
-	ifn a, [0x1000]
-	set PC, end
-	
-	set i, 0
-:nextchar ife [data+i], 0
-	set PC, end
-	set [0x8000+i], [data+i]
-	add i, 1
-	set PC, nextchar
-
-:data dat "Hello world!", 0
-
-:end sub PC, 1
-```
-
-Now that we have the code, we are ready to compile. Save the file and open a console 
-window in the same directly. Next, use the command below to compile your code (making
-sure that _dasm16.exe_ is also in the same directory).
-
-```
-dasm16 -v -o HelloWorld.bin HelloWorld.asm
-```
-
-You should see output in the console window similar to this:
-
-```
-DASM16 1.0.1326 (rev. 7, Jun 27 2013, 20:24:38)
-Initializing... Done.
-Building source file(s)... pass 1... pass 2... Done.
-Writing to file... Done.
-0000 | 7c01 beef 03c1 1000 7813 1000 7f81 0020
-0008 | 84c1 86d2 0013 7f81 0020 5ac1 0013 8000
-0010 | 88c2 7f81 0009 0048 0065 006c 006c 006f
-0018 | 0020 0077 006f 0072 006c 0064 0021 0000
-0020 | 8b83
-Build successful. (0.015 sec.)
-```
-
-Thats it! You should now see a file called _HelloWorld.bin_ in the same directory
-as your assembly file. To run this binary file, fire up your favorite DCPU-16 emulator 
-and have fun!
 
 Syntax
 ========
@@ -256,6 +198,64 @@ value ::= <static_value> | <string>
 
 value_list ::= <value> , <value_list> | <value>
 ```
+
+Example
+========
+
+Now, time for an example. We will take a look at the classic Hello World example, showing the 
+entire process of compilation. The first step is to create a new file, calling it __HelloWorld.asm__.
+This file will hold our assembly code, and will be used as an input file during 
+compilation. 
+
+Once you've created this file, copy and paste the code below.
+
+```asm
+; Assembler test for DCPU
+; by Markus Persson
+
+	set a, 0xbeef
+	set [0x1000], a
+	ifn a, [0x1000]
+	set PC, end
+	
+	set i, 0
+:nextchar ife [data+i], 0
+	set PC, end
+	set [0x8000+i], [data+i]
+	add i, 1
+	set PC, nextchar
+
+:data dat "Hello world!", 0
+
+:end sub PC, 1
+```
+
+Now that we have the code, we are ready to compile. Save the file and open a console 
+window in the same directly. Next, use the command below to compile your code (making
+sure that _dasm16.exe_ is also in the same directory).
+
+```
+dasm16 -v -o HelloWorld.bin HelloWorld.asm
+```
+
+You should see output in the console window similar to this:
+
+```
+DASM16 1.0.1326 (rev. 7, Jun 27 2013, 20:24:38)
+Initializing... Done.
+Building source file(s)... pass 1... pass 2... Done.
+Writing to file... Done.
+0000 | 7c01 beef 03c1 1000 7813 1000 7f81 0020
+0008 | 84c1 86d2 0013 7f81 0020 5ac1 0013 8000
+0010 | 88c2 7f81 0009 0048 0065 006c 006c 006f
+0018 | 0020 0077 006f 0072 006c 0064 0021 0000
+0020 | 8b83
+Build successful. (0.015 sec.)
+```
+
+Thats it! You should now see a file called _HelloWorld.bin_ in the same directory
+as your assembly file. To run this binary file, fire up your favorite DCPU-16 emulator 
+and have fun!
 
 License
 ======
