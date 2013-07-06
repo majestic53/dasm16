@@ -1,7 +1,9 @@
 DASM16
 ========
 
-An assembler for DCPU-16 development, written in C++.
+DASM16 is an 16-bit assembler built for development on the fictional DCPU-16 
+processor from the game 0x10c. For more information on the DCPU-16 processor, see: 
+http://0x10cwiki.com/wiki/DCPU-16.
 
 ###Version 1.1
 Updated: 7/5/2013
@@ -32,28 +34,23 @@ reserve 0x10 ; reserves 16 words in the assembled binary, initialized to zero
 the input file. As a result, all include directives required absolute paths, 
 or ralative paths to the assembler.
 
-1. [Introduction](https://github.com/majestic53/dasm16#introduction)
-2. [Usage](https://github.com/majestic53/dasm16#usage)
+Table of Contents
+========
+
+1. [Usage](https://github.com/majestic53/dasm16#usage)
 	* [Usage Example](https://github.com/majestic53/dasm16#usage-example)
-3. [Architecture](https://github.com/majestic53/dasm16#architecture)
+2. [Architecture](https://github.com/majestic53/dasm16#architecture)
 	* [Lexer](https://github.com/majestic53/dasm16#lexer)
 	* [Parser](https://github.com/majestic53/dasm16#parser)
 	* [Code Generator](https://github.com/majestic53/dasm16#code-generator)
-4. [Syntax](https://github.com/majestic53/dasm16#syntax)
+3. [Syntax](https://github.com/majestic53/dasm16#syntax)
 	* [Addressing Modes](https://github.com/majestic53/dasm16#addressing-modes)
 	* [Commands](https://github.com/majestic53/dasm16#commands)
 	* [Directives](https://github.com/majestic53/dasm16#directives)
 	* [Registers](https://github.com/majestic53/dasm16#registers)
 	* [Assembly BNF](https://github.com/majestic53/dasm16#assembly-bnf)
-5. [Example](https://github.com/majestic53/dasm16#example)
-6. [License](https://github.com/majestic53/dasm16#license)
-
-Introduction
-========
-
-DASM16 is an 16-bit assembler built for development on the fictional DCPU-16 
-processor from the game 0x10c. For more information on the DCPU-16 processor, see: 
-http://0x10cwiki.com/wiki/DCPU-16.
+4. [Example](https://github.com/majestic53/dasm16#example)
+5. [License](https://github.com/majestic53/dasm16#license)
 
 Usage
 ========
