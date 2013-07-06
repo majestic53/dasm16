@@ -320,18 +320,23 @@ _assembler::_evaluate_value(
 void 
 _assembler::_generate_pass_0(void)
 {
+	word_t word;
+	uuidl_t bin_id;
 	node value_node;
 	word_t offset = 0;
+	parser inc_parser;
 	token tok, value_tok;
 	std::vector<word_t> value;
 	std::vector<node> statement;
-	size_t i, child_position, value_list_position;
+	std::string::iterator byte_iter;
 	std::map<std::string, word_t>::iterator label_iter;
+	size_t i, child_position, value_list_position, file_size;
 
 	parser::reset();
 	_label_offset.clear();
 	
 	while(has_next_statement()) {
+		value.clear();
 		statement = get_statement();
 		tok = get_token(statement.front().get_id());
 
@@ -412,44 +417,161 @@ _assembler::_generate_pass_0(void)
 				break;
 			case TOKEN_DIRECTIVE:
 
-				if(!statement.front().has_children()) {
-					THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
-						ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
-						tok.to_string(false)
-						);
-				}
-				value_list_position = statement.front().get_child_position(0);
+				switch(tok.get_subtype()) {
+					case DIRECTIVE_DATA:
+						if(!statement.front().has_children()) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+								tok.to_string(false)
+								);
+						}
+						value_list_position = statement.front().get_child_position(0);
 
-				for(i = 0; i < statement.at(value_list_position).size(); ++i) {
-					child_position = statement.at(value_list_position).get_child_position(i);
+						for(i = 0; i < statement.at(value_list_position).size(); ++i) {
+							child_position = statement.at(value_list_position).get_child_position(i);
 
-					if(child_position >= statement.size()) {
-						THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
-							ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
-							tok.to_string(false)
-							);
-					}
-					tok = get_token(statement.at(child_position).get_id());
-
-					if(tok.get_type() == TOKEN_LABEL) {
-						++offset;
-					} else {
-
-						switch(tok.get_subtype()) {
-							case VALUE_HEXIDECIMAL:
-							case VALUE_INTEGER:
-								++offset;
-								break;
-							case VALUE_STRING_VAR:
-								offset += (word_t) tok.get_text().size();
-								break;
-							default:
+							if(child_position >= statement.size()) {
 								THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
 									ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
 									tok.to_string(false)
 									);
+							}
+							tok = get_token(statement.at(child_position).get_id());
+
+							if(tok.get_type() == TOKEN_LABEL) {
+								++offset;
+							} else {
+
+								switch(tok.get_subtype()) {
+									case VALUE_HEXIDECIMAL:
+									case VALUE_INTEGER:
+										++offset;
+										break;
+									case VALUE_STRING_VAR:
+										offset += (word_t) tok.get_text().size();
+										break;
+									default:
+										THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+											ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+											tok.to_string(false)
+											);
+								}
+							}
 						}
-					}
+						break;
+					case DIRECTIVE_INCBIN: {
+						bin_id = tok.get_id();
+						child_position = statement.front().get_child_position(0);
+
+						if(child_position >= statement.size()) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+								tok.to_string(false)
+								);
+						}
+						tok = get_token(statement.at(child_position).get_id());
+						
+						if(tok.get_type() != TOKEN_VALUE
+								|| tok.get_subtype() != VALUE_STRING_VAR) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+								tok.to_string(false)
+								);
+						}
+						std::ifstream file(
+							std::string(get_origin_path() + tok.get_text()).c_str(), 
+							std::ios::in | std::ios::binary
+							);
+
+						if(!file) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_INCLUDE_FILE_NOT_FOUND,
+								"\'" << tok.get_text() << "\'"
+								);
+						}
+						file_size = (size_t) file.tellg();
+						file.seekg(0, std::ios::end);
+						file_size = (size_t) file.tellg() - file_size;
+						file.seekg(0, std::ios::beg);
+
+						if(file_size % 2) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_BINARY_FILE_UNALIGNED,
+								"\'" << tok.get_text() << "\'"
+								);
+						}
+
+						while(file.peek() != EOF) {
+							file.read((char *) &word, sizeof(word_t));
+							value.push_back((word << BYTE_WIDTH) | (word >> BYTE_WIDTH));
+						}
+						file.close();
+						offset += (word_t) value.size();
+
+						if(offset > MAX_WORD) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_BINARY_FILE_TOO_LARGE,
+								"\'" << tok.get_text() << "\'"
+								);
+						}
+						_binary_include.insert(std::pair<uuidl_t, std::vector<word_t>>(bin_id, value));
+						} break;
+					case DIRECTIVE_INCLUDE:
+						child_position = statement.front().get_child_position(0);
+
+						if(child_position >= statement.size()) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+								tok.to_string(false)
+								);
+						}
+						tok = get_token(statement.at(child_position).get_id());
+
+						if(tok.get_type() != TOKEN_VALUE
+								|| tok.get_subtype() != VALUE_STRING_VAR) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+								tok.to_string(false)
+								);
+						}
+						remove_statement();
+						inc_parser = parser(get_origin_path() + tok.get_text(), true);
+						inc_parser.discover();
+						import_tokens(inc_parser.export_tokens());
+						import_statements(inc_parser.export_statements());
+						break;
+					case DIRECTIVE_RESERVE:
+						child_position = statement.front().get_child_position(0);
+
+						if(child_position >= statement.size()) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+								tok.to_string(false)
+								);
+						}
+						tok = get_token(statement.at(child_position).get_id());
+
+						if(tok.get_type() != TOKEN_VALUE
+								|| tok.get_subtype() != VALUE_INTEGER) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+								tok.to_string(false)
+								);
+						}
+						offset += _evaluate_value(tok).front();
+
+						if(offset > MAX_WORD) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_RESERVATION_TOO_LARGE,
+								tok.to_string(false)
+								);
+						}
+						break;
+					default:
+						THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+							ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+							tok.to_string(false)
+							);
 				}
 				break;
 			case TOKEN_LABEL:
@@ -481,6 +603,7 @@ _assembler::_generate_pass_1(void)
 	std::vector<word_t> result, oper_a, oper_b;
 	size_t i, child_position, value_list_position;
 	std::map<std::string, word_t>::iterator label_iter;
+	std::map<uuidl_t, std::vector<word_t>>::iterator bin_include_iter;
 
 	parser::reset();
 	_binary_file.clear();
@@ -515,51 +638,95 @@ _assembler::_generate_pass_1(void)
 				break;
 			case TOKEN_DIRECTIVE:
 
-				if(!statement.front().has_children()) {
-					THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
-						ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
-						tok.to_string(false)
-						);
-				}
-				value_list_position = statement.front().get_child_position(0);
-
-				for(i = 0; i < statement.at(value_list_position).size(); ++i) {
-					child_position = statement.at(value_list_position).get_child_position(i);
-
-					if(child_position >= statement.size()) {
-						THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
-							ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
-							tok.to_string(false)
-							);
-					}
-					tok = get_token(statement.at(child_position).get_id());
-
-					if(tok.get_type() == TOKEN_LABEL) {
-						label_iter = _label_offset.find(tok.get_text());
-
-						if(label_iter == _label_offset.end()) {
+				switch(tok.get_subtype()) {
+					case DIRECTIVE_DATA:
+						if(!statement.front().has_children()) {
 							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
-								ASSEMBLER_EXCEPTION_LABEL_UNDEFINED,
+								ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
 								tok.to_string(false)
 								);
 						}
-						_binary_file.push_back(label_iter->second);
-					} else {
+						value_list_position = statement.front().get_child_position(0);
 
-						switch(tok.get_subtype()) {
-							case VALUE_HEXIDECIMAL:
-							case VALUE_INTEGER:
-							case VALUE_STRING_VAR:
-								result = _evaluate_value(tok, false);
-								_binary_file.insert(_binary_file.end(), result.begin(), result.end());
-								break;
-							default:
+						for(i = 0; i < statement.at(value_list_position).size(); ++i) {
+							child_position = statement.at(value_list_position).get_child_position(i);
+
+							if(child_position >= statement.size()) {
 								THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
 									ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
 									tok.to_string(false)
 									);
+							}
+							tok = get_token(statement.at(child_position).get_id());
+
+							if(tok.get_type() == TOKEN_LABEL) {
+								label_iter = _label_offset.find(tok.get_text());
+
+								if(label_iter == _label_offset.end()) {
+									THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+										ASSEMBLER_EXCEPTION_LABEL_UNDEFINED,
+										tok.to_string(false)
+										);
+								}
+								_binary_file.push_back(label_iter->second);
+							} else {
+
+								switch(tok.get_subtype()) {
+									case VALUE_HEXIDECIMAL:
+									case VALUE_INTEGER:
+									case VALUE_STRING_VAR:
+										result = _evaluate_value(tok, false);
+										_binary_file.insert(_binary_file.end(), result.begin(), result.end());
+										break;
+									default:
+										THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+											ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+											tok.to_string(false)
+											);
+								}
+							}
 						}
-					}
+						break;
+					case DIRECTIVE_INCBIN:
+						bin_include_iter = _binary_include.find(tok.get_id());
+
+						if(bin_include_iter == _binary_include.end()) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+								tok.to_string(false)
+								);
+						}
+						_binary_file.insert(_binary_file.end(), bin_include_iter->second.begin(), bin_include_iter->second.end());
+						break;
+					case DIRECTIVE_RESERVE:
+						child_position = statement.front().get_child_position(0);
+
+						if(child_position >= statement.size()) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+								tok.to_string(false)
+								);
+						}
+						tok = get_token(statement.at(child_position).get_id());
+
+						if(tok.get_type() != TOKEN_VALUE
+								|| tok.get_subtype() != VALUE_INTEGER) {
+							THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+								ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+								tok.to_string(false)
+								);
+						}
+						result = _evaluate_value(tok);
+
+						for(i = 0; i < result.front(); ++i) {
+							_binary_file.push_back(ASSEMBLER_RESERVED_VALUE);
+						}
+						break;
+					default:
+						THROW_ASSEMBLER_EXCEPTION_WITH_MESSAGE(
+							ASSEMBLER_EXCEPTION_MALFORMED_STATEMENT,
+							tok.to_string(false)
+							);
 				}
 				break;
 			case TOKEN_SPECIAL_OPCODE:
@@ -630,6 +797,7 @@ _assembler::clear(void)
 
 	parser::reset();
 	_binary_file.clear();
+	_binary_include.clear();
 	_label_offset.clear();
 	_value.clear();
 }
@@ -712,6 +880,7 @@ _assembler::initialize(
 
 	parser::initialize(other);
 	_binary_file = other._binary_file;
+	_binary_include = other._binary_include;
 	_label_offset = other._label_offset;
 	_value = other._value;
 }

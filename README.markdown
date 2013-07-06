@@ -4,6 +4,8 @@ DASM16
 An assembler for DCPU-16 development, written in C++.
 
 1. [Introduction](https://github.com/majestic53/dasm16#introduction)
+3. [Changelog](https://github.com/majestic53/dasm16#changelog)
+	* [Version 1.1](https://github.com/majestic53/dasm16#version-1.1)
 2. [Usage](https://github.com/majestic53/dasm16#usage)
 	* [Usage Example](https://github.com/majestic53/dasm16#usage-example)
 3. [Architecture](https://github.com/majestic53/dasm16#architecture)
@@ -25,6 +27,38 @@ Introduction
 DASM16 is an 16-bit assembler built for development on the fictional DCPU-16 
 processor from the game 0x10c. For more information on the DCPU-16 processor, see: 
 http://0x10cwiki.com/wiki/DCPU-16.
+
+Changelog
+========
+
+###Version 1.1
+Updated: 7/5/2013
+
+######Added extended directives:
+
+* __INCBIN__: Embed a binary file inside the assembled binary
+
+```asm
+incbin "example.bin" ; file must be word aligned (length % 2 == 0)
+```
+
+* __INCLUDE__: Include another assembly file
+
+```asm
+include "example.asm"
+```
+
+* __RESERVE__: Reserve a contiguous block of words inside the assembled 
+binary
+
+```asm
+reserve 0x10 ; reserves 16 words in the assembled binary, initialized to zero
+```
+
+######Bug fixes:
+* Fixed a bug where the build path was not being set to the current location of 
+the input file. As a result, all include directives required absolute paths, 
+or ralative paths to the assembler.
 
 Usage
 ========
@@ -146,7 +180,7 @@ The DASM16 supports a series of assembler directives with the format:
 <directive> <value_list>
 ------------------------
 
-DAT
+DAT | INCBIN | INCLUDE | RESERVE
 ```
 
 ###Registers

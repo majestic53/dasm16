@@ -166,7 +166,41 @@ _parser::_enumerate_directive(
 	}
 	parent_position = _append_token(statement);
 	_advance_token();
-	_enumerate_value_list(statement, parent_position);
+
+	switch(tok.get_subtype()) {
+		case DIRECTIVE_DATA:
+			_enumerate_value_list(statement, parent_position);
+			break;
+		case DIRECTIVE_INCBIN:
+		case DIRECTIVE_INCLUDE:
+			tok = get_token();
+
+			if(tok.get_type() != TOKEN_VALUE
+					|| tok.get_subtype() != VALUE_STRING_VAR) {
+				THROW_PARSER_EXCEPTION_WITH_MESSAGE(
+					PARSER_EXCEPTION_EXPECTED_STRING,
+					lexer::to_string(true)
+					);
+			}
+			_append_token(statement, parent_position);
+			_advance_token();
+			break;
+		case DIRECTIVE_RESERVE:
+			tok = get_token();
+
+			if(tok.get_type() != TOKEN_VALUE
+					|| tok.get_subtype() != VALUE_INTEGER) {
+				THROW_PARSER_EXCEPTION_WITH_MESSAGE(
+					PARSER_EXCEPTION_EXPECTED_VALUE,
+					lexer::to_string(true)
+					);
+			}
+			_append_token(statement, parent_position);
+			_advance_token();
+			break;
+		default:
+			break;
+	}
 }
 
 void 
@@ -541,6 +575,28 @@ _parser::discover(void)
 	reset();
 }
 
+std::vector<std::vector<node>> 
+_parser::export_statements(void)
+{
+	LOCK_OBJECT(std::recursive_mutex, _parser_lock);
+
+	token tok;
+	std::vector<std::vector<node>> result;
+	std::vector<std::vector<node>>::iterator statement_iter = _statement.begin();
+	
+	for(; statement_iter != _statement.end(); ++statement_iter) {
+		tok = get_token(statement_iter->front().get_id());
+
+		if(tok.get_type() == TOKEN_BEGIN
+				|| tok.get_type() == TOKEN_END) {
+			continue;
+		}
+		result.push_back(*statement_iter);
+	}
+
+	return result;
+}
+
 std::vector<node> &
 _parser::get_statement(void)
 {
@@ -595,6 +651,21 @@ _parser::has_previous_statement(void)
 	LOCK_OBJECT(std::recursive_mutex, _parser_lock);
 
 	return _position > 0; 
+}
+
+void 
+_parser::import_statements(
+	std::vector<std::vector<node>> statements
+	)
+{
+	LOCK_OBJECT(std::recursive_mutex, _parser_lock);
+
+	size_t offset = _position;
+	std::vector<std::vector<node>>::iterator statement_iter = statements.begin();
+
+	for(; statement_iter != statements.end(); ++statement_iter) {
+		_statement.insert(_statement.begin() + (++offset), *statement_iter);
+	}
 }
 
 void 
@@ -669,6 +740,31 @@ _parser::move_previous_statement(void)
 	--_position;
 	
 	return get_statement();
+}
+
+void 
+_parser::remove_statement(void)
+{
+	LOCK_OBJECT(std::recursive_mutex, _parser_lock);
+
+	remove_statement(_position);
+}
+
+void 
+_parser::remove_statement(
+	size_t position
+	)
+{
+	LOCK_OBJECT(std::recursive_mutex, _parser_lock);
+
+	if(position >= _statement.size()) {
+		THROW_PARSER_EXCEPTION_WITH_MESSAGE(
+			PARSER_EXCEPTION_INVALID_STATEMENT_POSITION,
+			"pos. " << position
+			);
+	}
+	_statement.erase(_statement.begin() + position);
+	--_position;
 }
 
 void 

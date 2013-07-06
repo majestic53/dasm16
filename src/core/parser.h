@@ -50,6 +50,8 @@ typedef class _parser :
 
 		virtual void discover(void);
 
+		std::vector<std::vector<node>> export_statements(void);
+
 		std::vector<node> &get_statement(void);
 
 		std::vector<node> &get_statement(
@@ -61,6 +63,10 @@ typedef class _parser :
 		bool has_next_statement(void);
 
 		bool has_previous_statement(void);
+
+		void import_statements(
+			std::vector<std::vector<node>> statements
+			);
 
 		virtual void initialize(
 			const std::string &input,
@@ -74,6 +80,12 @@ typedef class _parser :
 		std::vector<node> &move_next_statement(void);
 
 		std::vector<node> &move_previous_statement(void);
+
+		void remove_statement(void);
+
+		void remove_statement(
+			size_t position
+			);
 
 		virtual void reset(void);
 

@@ -1,0 +1,12 @@
+Version 1.1
+Updated: 7/5/2013
+========
+
+1) Added extended directives:
+--- INCBIN <string>: Embed a binary file inside the assembled binary (requires that the file be word aligned)
+--- INCLUDE <string>: Include another assembly file
+--- RESERVE <integer>: Reserve a contiguous block of words inside the assembled binary (initialized to zero)
+
+2) Fixed a bug where the build path was not being set to the current location of 
+the input file. As a result, all include directives required absolute paths, 
+or ralative paths to the assembler.

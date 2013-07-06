@@ -40,6 +40,9 @@ enum {
 
 enum {
 	DIRECTIVE_DATA = 0,
+	DIRECTIVE_INCBIN,
+	DIRECTIVE_INCLUDE,
+	DIRECTIVE_RESERVE,
 };
 
 enum {
@@ -155,7 +158,7 @@ static const word_t ADDRESSING_MODE_VAL[] = {
 };
 
 static const std::string DIRECTIVE_STR[] = {
-	"DAT",
+	"DAT", "INCBIN", "INCLUDE", "RESERVE",
 };
 
 static const std::string OPCODE_BASIC_STR[] = {
@@ -213,7 +216,7 @@ static const std::string VALUE_STR[] = {
 
 #define MAX_LITERAL ((word_t) 0x1e)
 #define MAX_ADDRESSING_MODE ADDRESSING_MODE_LITERAL
-#define MAX_DIRECTIVE DIRECTIVE_DATA
+#define MAX_DIRECTIVE DIRECTIVE_RESERVE
 #define MAX_OPCODE_BASIC OPCODE_BASIC_STD
 #define MAX_OPCODE_SPECIAL OPCODE_SPECIAL_HWI
 #define MAX_OPERATOR OPERATOR_PUSH

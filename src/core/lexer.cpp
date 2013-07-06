@@ -316,6 +316,28 @@ _lexer::discover(void)
 	reset();
 }
 
+std::vector<token> 
+_lexer::export_tokens(void)
+{
+	LOCK_OBJECT(std::recursive_mutex, _lexer_lock);
+
+	token tok;
+	std::vector<token> result;
+	std::vector<uuidl_t>::iterator token_pos_iter = _token_position.begin();
+
+	for(; token_pos_iter != _token_position.end(); ++token_pos_iter) {
+		tok = _token.find(*token_pos_iter)->second;
+
+		if(tok.get_type() == TOKEN_BEGIN
+				|| tok.get_type() == TOKEN_END) {
+			continue;
+		}
+		result.push_back(tok);
+	}
+
+	return result;
+}
+
 uuidl_t 
 _lexer::get_begin_token_id(void)
 {
@@ -408,6 +430,21 @@ _lexer::has_previous_token(void)
 	LOCK_OBJECT(std::recursive_mutex, _lexer_lock);
 
 	return _position > 0;
+}
+
+void 
+_lexer::import_tokens(
+	std::vector<token> tokens
+	)
+{
+	LOCK_OBJECT(std::recursive_mutex, _lexer_lock);
+
+	std::vector<token>::iterator token_iter = tokens.begin();
+
+	for(; token_iter != tokens.end(); ++token_iter) {
+		_token.insert(std::pair<uuidl_t, token>(token_iter->get_id(), *token_iter));
+		_token_position.insert(_token_position.begin() + (_position++), token_iter->get_id());
+	}
 }
 
 void 

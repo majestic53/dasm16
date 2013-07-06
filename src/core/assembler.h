@@ -93,6 +93,8 @@ typedef class _assembler :
 
 		std::vector<word_t> _binary_file;
 
+		std::map<uuidl_t, std::vector<word_t>> _binary_include;
+
 		std::map<std::string, word_t> _label_offset;
 
 		std::map<uuidl_t, std::vector<word_t>> _value;

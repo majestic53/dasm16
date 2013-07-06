@@ -279,8 +279,7 @@ _token::to_string(
 		ss << " {" << "ln. " << (_line + 1);
 	}
 
-	if(verbose
-			&& _line != INVALID_TYPE
+	if(_line != INVALID_TYPE
 			&& !_origin.empty()) {
 		ss << ", " << "src. \'" << _origin << "\'";
 	}

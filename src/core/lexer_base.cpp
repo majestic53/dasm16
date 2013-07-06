@@ -146,6 +146,23 @@ _lexer_base::get_origin(void)
 	return _origin;
 }
 
+std::string 
+_lexer_base::get_origin_path(void)
+{
+	LOCK_OBJECT(std::recursive_mutex, _lexer_base_lock);
+
+	std::string result;
+	size_t position = _origin.find_last_of(CHARACTER_DIRECTORY);
+
+	if(position == std::string::npos) {
+		result = DEFAULT_ORIGIN;
+	} else {
+		result = _origin.substr(0, position + 1);
+	}
+
+	return result;
+}
+
 bool 
 _lexer_base::has_next_character(void)
 {

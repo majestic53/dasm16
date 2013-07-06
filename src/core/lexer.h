@@ -50,6 +50,8 @@ typedef class _lexer :
 		virtual void clear(void);
 
 		virtual void discover(void);
+		 
+		std::vector<token> export_tokens(void);
 
 		uuidl_t get_begin_token_id(void);
 
@@ -70,6 +72,10 @@ typedef class _lexer :
 		bool has_next_token(void);
 
 		bool has_previous_token(void);
+
+		void import_tokens(
+			std::vector<token> tokens
+			);
 
 		virtual void initialize(
 			const std::string &input,

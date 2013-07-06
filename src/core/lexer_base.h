@@ -58,6 +58,8 @@ typedef class _lexer_base {
 
 		std::string get_origin(void);
 
+		std::string get_origin_path(void);
+
 		bool has_next_character(void);
 
 		bool has_previous_character(void);

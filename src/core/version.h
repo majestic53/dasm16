@@ -21,9 +21,9 @@
 #define VERSION_H_
 
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 0
-#define VERSION_YRWW 1326
-#define VERSION_WEEK_REV 7
+#define VERSION_MINOR 1
+#define VERSION_YRWW 1327
+#define VERSION_WEEK_REV 1
 
 #define __TO_STRING_X(_T_) #_T_
 #define TO_STRING(_T_) __TO_STRING_X(_T_)

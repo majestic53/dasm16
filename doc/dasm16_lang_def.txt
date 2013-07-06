@@ -5,7 +5,7 @@ basic_opcode ::= SET | ADD | SUB | MUL | MLI | DIV | DVI | MOD | MDI
 
 comment ::= ;.*\n
 
-directive_type ::= DAT
+directive_type ::= DAT | INCBIN | INCLUDE | RESERVE
 
 generic_register ::= A | B | C | X | Y | Z | I | J
 
