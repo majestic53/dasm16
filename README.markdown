@@ -3,34 +3,6 @@ DASM16
 
 An assembler for DCPU-16 development, written in C++.
 
-1. [Introduction](https://github.com/majestic53/dasm16#introduction)
-3. [Changelog](https://github.com/majestic53/dasm16#changelog)
-	* [Version 1.1](https://github.com/majestic53/dasm16#version-1.1)
-2. [Usage](https://github.com/majestic53/dasm16#usage)
-	* [Usage Example](https://github.com/majestic53/dasm16#usage-example)
-3. [Architecture](https://github.com/majestic53/dasm16#architecture)
-	* [Lexer](https://github.com/majestic53/dasm16#lexer)
-	* [Parser](https://github.com/majestic53/dasm16#parser)
-	* [Code Generator](https://github.com/majestic53/dasm16#code-generator)
-4. [Syntax](https://github.com/majestic53/dasm16#syntax)
-	* [Addressing Modes](https://github.com/majestic53/dasm16#addressing-modes)
-	* [Commands](https://github.com/majestic53/dasm16#commands)
-	* [Directives](https://github.com/majestic53/dasm16#directives)
-	* [Registers](https://github.com/majestic53/dasm16#registers)
-	* [Assembly BNF](https://github.com/majestic53/dasm16#assembly-bnf)
-5. [Example](https://github.com/majestic53/dasm16#example)
-6. [License](https://github.com/majestic53/dasm16#license)
-
-Introduction
-========
-
-DASM16 is an 16-bit assembler built for development on the fictional DCPU-16 
-processor from the game 0x10c. For more information on the DCPU-16 processor, see: 
-http://0x10cwiki.com/wiki/DCPU-16.
-
-Changelog
-========
-
 ###Version 1.1
 Updated: 7/5/2013
 
@@ -59,6 +31,29 @@ reserve 0x10 ; reserves 16 words in the assembled binary, initialized to zero
 * Fixed a bug where the build path was not being set to the current location of 
 the input file. As a result, all include directives required absolute paths, 
 or ralative paths to the assembler.
+
+1. [Introduction](https://github.com/majestic53/dasm16#introduction)
+2. [Usage](https://github.com/majestic53/dasm16#usage)
+	* [Usage Example](https://github.com/majestic53/dasm16#usage-example)
+3. [Architecture](https://github.com/majestic53/dasm16#architecture)
+	* [Lexer](https://github.com/majestic53/dasm16#lexer)
+	* [Parser](https://github.com/majestic53/dasm16#parser)
+	* [Code Generator](https://github.com/majestic53/dasm16#code-generator)
+4. [Syntax](https://github.com/majestic53/dasm16#syntax)
+	* [Addressing Modes](https://github.com/majestic53/dasm16#addressing-modes)
+	* [Commands](https://github.com/majestic53/dasm16#commands)
+	* [Directives](https://github.com/majestic53/dasm16#directives)
+	* [Registers](https://github.com/majestic53/dasm16#registers)
+	* [Assembly BNF](https://github.com/majestic53/dasm16#assembly-bnf)
+5. [Example](https://github.com/majestic53/dasm16#example)
+6. [License](https://github.com/majestic53/dasm16#license)
+
+Introduction
+========
+
+DASM16 is an 16-bit assembler built for development on the fictional DCPU-16 
+processor from the game 0x10c. For more information on the DCPU-16 processor, see: 
+http://0x10cwiki.com/wiki/DCPU-16.
 
 Usage
 ========
