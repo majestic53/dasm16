@@ -2,8 +2,8 @@ DASM16
 ========
 
 DASM16 is an 16-bit assembler built for development on the fictional DCPU-16 
-processor from the game 0x10c. For more information on the DCPU-16 processor, see: 
-http://0x10cwiki.com/wiki/DCPU-16.
+processor from the game 0x10c, and is fully compliant with the DCPU-16 1.7 
+specification as supplied by [Notch](http://dcpu.com/dcpu-16/).
 
 ###Version 1.1
 Updated: 7/5/2013
@@ -30,9 +30,9 @@ reserve 0x10 ; reserves 16 words in the assembled binary, initialized to zero
 ```
 
 ######Bug fixes:
-* Fixed a bug where the build path was not being set to the current location of 
-the input file. As a result, all include directives required absolute paths, 
-or ralative paths to the assembler.
+* The build path was not being set to the location of the input file. 
+As a result, all include directives required absolute paths, 
+or ralative paths from the assembler.
 
 Table of Contents
 ========
@@ -55,7 +55,12 @@ Table of Contents
 Usage
 ========
 
-__dasm16 [-h | -v] [-o OUTPUT] input...__
+DASM16 is a command-line tool with a very basic interface. To use DAMS16, follow the
+usage statement:
+
+```
+dasm16 [-h | -v] [-o OUTPUT] input...
+```
 
 * __-h__: Display help menu
 * __-v__: Enable verbose mode
@@ -64,9 +69,9 @@ __dasm16 [-h | -v] [-o OUTPUT] input...__
 
 ###Usage Example
 
-For the sake of this example, assume that we have an assembly file called 
-__code.asm__. If we wish to compile this code into a binary file called __out.bin__
-with verbose output, we would use the command below:
+Assume that we have an assembly file called __code.asm__. If we wish to compile 
+this code into a binary file called __out.bin__ with verbose output, we would 
+use the command:
 
 ```
 dasm16 -v -o out.bin code.asm
@@ -117,8 +122,6 @@ representation of the assembly code.
 
 Syntax
 ========
-
-DASM16 is fully compliant with the DCPU-16 1.7 specification as supplied by Notch.
 
 ###Addressing Modes
 
@@ -228,12 +231,12 @@ value_list ::= <value> , <value_list> | <value>
 Example
 ========
 
-Now, time for an example. We will take a look at the classic Hello World example, showing the 
-entire process of compilation. The first step is to create a new file, calling it __HelloWorld.asm__.
-This file will hold our assembly code, and will be used as an input file during 
-compilation. 
+We will take a look at the classic Hello World example, showing the 
+entire process of compilation. The first step is to create a new file, 
+calling it __HelloWorld.asm__. This file will hold our assembly code, 
+and will be used as the input file during compilation. 
 
-Once you've created this file, copy and paste the code below.
+Once this file has been created, copy and paste the code below:
 
 ```asm
 ; Assembler test for DCPU
@@ -256,15 +259,15 @@ Once you've created this file, copy and paste the code below.
 :end sub PC, 1
 ```
 
-Now that we have the code, we are ready to compile. Save the file and open a console 
-window in the same directly. Next, use the command below to compile your code (making
-sure that _dasm16.exe_ is also in the same directory).
+Save the file and open a console window in the same directly. Next, 
+use the command below to compile your code (making sure that _dasm16.exe_ 
+is also in the same directory).
 
 ```
 dasm16 -v -o HelloWorld.bin HelloWorld.asm
 ```
 
-You should see output in the console window similar to this:
+The output that appears in the console window should be similar to this:
 
 ```
 DASM16 1.0.1326 (rev. 7, Jun 27 2013, 20:24:38)
@@ -279,9 +282,8 @@ Writing to file... Done.
 Build successful. (0.015 sec.)
 ```
 
-Thats it! You should now see a file called _HelloWorld.bin_ in the same directory
-as your assembly file. To run this binary file, fire up your favorite DCPU-16 emulator 
-and have fun!
+Thats it! _HelloWorld.bin_ can be found in the same directory
+as the assembly file.
 
 License
 ======
