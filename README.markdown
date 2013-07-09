@@ -96,7 +96,7 @@ perform the basic steps required for assembly.
 
 ###Lexer
 
-The first step, breaks the the assembly file into descrete pieces, through a process known 
+The first step breaks the the assembly file into descrete pieces, through a process known 
 as _lexical analysis_. These descrete pieces are called tokens, and are used to check 
 for code correctness in the next step.
 
@@ -104,20 +104,20 @@ for code correctness in the next step.
 
 ###Parser
 
-Once the code has been broken into tokens, the next step is to determine if the tokens are 
-in the correct order. This is known as _syntactic analysis_, or checking that the code's
-syntax is correct. During this step, the tokens are placed into tree structures, called _syntax trees_.
-These trees give the tokens structure, as well as imply precedence.
+Once the code has been broken into tokens, the token ordering is used to determine if the code is 
+syntactically correct. This is known as _syntactic analysis_. During this step the tokens are 
+placed into tree structures, called _syntax trees_, which form statements. These trees give the tokens 
+structure, as well as imply precedence.
 
 ![Syntax tree generation](http://dl.dropboxusercontent.com/u/6410544/dasm16/parser.png)
 
 ###Code Generator
 
-The finaly step is to generate the binary code using the syntax trees generated earlier. To do this, we
-must "walk over" the trees. During this process, we perform _symantic analysis_, or checking that the 
-syntax trees make sense.
+The final step involves generating the binary code using the statements (syntax trees) generated earlier. 
+To do this, the statements are evaluated. During this process, _symantic analysis_ is performed, which makes 
+sure the statements make sense.
 
-If the code is syntactically/semantically sound, the assembler will produce a file containing binary
+If the code is syntactically and semantically correct, the assembler produces a file containing binary
 representation of the assembly code.
 
 Syntax
@@ -232,11 +232,14 @@ Example
 ========
 
 We will take a look at the classic Hello World example, showing the 
-entire process of compilation. The first step is to create a new file, 
-calling it __HelloWorld.asm__. This file will hold our assembly code, 
+entire process of compilation. 
+
+###Steps:
+
+* Create a new file, called __HelloWorld.asm__ (or something...). This file will hold our assembly code, 
 and will be used as the input file during compilation. 
 
-Once this file has been created, copy and paste the code below:
+* Copy-and-paste the code below into the file:
 
 ```asm
 ; Assembler test for DCPU
@@ -259,15 +262,16 @@ Once this file has been created, copy and paste the code below:
 :end sub PC, 1
 ```
 
-Save the file and open a console window in the same directly. Next, 
-use the command below to compile your code (making sure that _dasm16.exe_ 
-is also in the same directory).
+* Save the file and open a console window in the same directly.
+
+* Use the command below to compile your code (making sure that _dasm16.exe_ 
+is also in the same directory):
 
 ```
 dasm16 -v -o HelloWorld.bin HelloWorld.asm
 ```
 
-The output that appears in the console window should be similar to this:
+* The output that appears in the console window should be similar to this:
 
 ```
 DASM16 1.0.1326 (rev. 7, Jun 27 2013, 20:24:38)
