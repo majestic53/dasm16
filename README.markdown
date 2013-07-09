@@ -2,7 +2,7 @@ DASM16
 ========
 
 DASM16 is an 16-bit assembler built for development on the fictional DCPU-16 
-processor from the game 0x10c, and is fully compliant with the DCPU-16 1.7 
+platform, from the game 0x10c; and is fully compliant with the DCPU-16 1.7 
 specification as supplied by [Notch](http://dcpu.com/dcpu-16/).
 
 ###Version 1.1
@@ -236,10 +236,10 @@ entire process of compilation.
 
 ###Steps:
 
-* Create a new file, called __HelloWorld.asm__. This file will hold the assembly code, 
+1. Create a new file, called __HelloWorld.asm__. This file will hold the assembly code, 
 and will be used as the input file during compilation. 
 
-* Copy-and-paste the code below into the file:
+2. Copy-and-paste the code below into the file:
 
 ```asm
 ; Assembler test for DCPU
@@ -262,16 +262,16 @@ and will be used as the input file during compilation.
 :end sub PC, 1
 ```
 
-* Save the file and open a console window in the same directly.
+3. Save the file and open a console window in the same directly.
 
-* Use the command below to compile the code (making sure that _dasm16.exe_ 
+4. Use the command below to compile the code (making sure that _dasm16.exe_ 
 is also in the same directory):
 
 ```
 dasm16 -v -o HelloWorld.bin HelloWorld.asm
 ```
 
-* The output that will appear in the console window should be similar to this:
+5. The output that will appear in the console window should be similar to this:
 
 ```
 DASM16 1.0.1326 (rev. 7, Jun 27 2013, 20:24:38)
