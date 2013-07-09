@@ -70,7 +70,7 @@ dasm16 [-h | -v] [-o OUTPUT] input...
 ###Usage Example
 
 Assume that we have an assembly file called __code.asm__. If we wish to compile 
-this code into a binary file called __out.bin__ with verbose output, we would 
+this code into a binary file called __out.bin__, with verbose output, we would 
 use the command:
 
 ```
@@ -104,10 +104,10 @@ for code correctness in the next step.
 
 ###Parser
 
-Once the code has been broken into tokens, the token ordering is used to determine if the code is 
-syntactically correct. This is known as _syntactic analysis_. During this step the tokens are 
-placed into tree structures, called _syntax trees_, which form statements. These trees give the tokens 
-structure, as well as imply precedence.
+Once the code has been broken into tokens, the token ordering is used to determine if the code's syntax 
+is correct. This is known as _syntactic analysis_. During this step the tokens are placed into tree 
+structures, called _syntax trees_, forming statements. These trees give the tokens structure, as well 
+as imply precedence.
 
 ![Syntax tree generation](http://dl.dropboxusercontent.com/u/6410544/dasm16/parser.png)
 
@@ -117,7 +117,7 @@ The final step involves generating the binary code using the statements (syntax 
 To do this, the statements are evaluated. During this process, _symantic analysis_ is performed, which makes 
 sure the statements make sense.
 
-If the code is syntactically and semantically correct, the assembler produces a file containing binary
+If the code is syntactically and semantically correct, the assembler produces a file containing the binary
 representation of the assembly code.
 
 Syntax
@@ -236,7 +236,7 @@ entire process of compilation.
 
 ###Steps:
 
-* Create a new file, called __HelloWorld.asm__ (or something...). This file will hold our assembly code, 
+* Create a new file, called __HelloWorld.asm__. This file will hold the assembly code, 
 and will be used as the input file during compilation. 
 
 * Copy-and-paste the code below into the file:
@@ -264,14 +264,14 @@ and will be used as the input file during compilation.
 
 * Save the file and open a console window in the same directly.
 
-* Use the command below to compile your code (making sure that _dasm16.exe_ 
+* Use the command below to compile the code (making sure that _dasm16.exe_ 
 is also in the same directory):
 
 ```
 dasm16 -v -o HelloWorld.bin HelloWorld.asm
 ```
 
-* The output that appears in the console window should be similar to this:
+* The output that will appear in the console window should be similar to this:
 
 ```
 DASM16 1.0.1326 (rev. 7, Jun 27 2013, 20:24:38)
@@ -286,7 +286,7 @@ Writing to file... Done.
 Build successful. (0.015 sec.)
 ```
 
-Thats it! _HelloWorld.bin_ can be found in the same directory
+Thats it! The compiled Hello World binary can be found in the same directory
 as the assembly file.
 
 License
