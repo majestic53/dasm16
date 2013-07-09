@@ -71,11 +71,7 @@ dasm16 [-h | -v] [-o OUTPUT] input...
 
 Assume that we have an assembly file called __code.asm__. If we wish to compile 
 this code into a binary file called __out.bin__, with verbose output, we would 
-use the command:
-
-```
-dasm16 -v -o out.bin code.asm
-```
+use the command: `dasm16 -v -o out.bin code.asm`
 
 ######Output:
 
@@ -239,7 +235,14 @@ entire process of compilation.
 1. Create a new file, called __HelloWorld.asm__. This file will hold the assembly code, 
 and will be used as the input file during compilation. 
 
-2. Copy-and-paste the code below into the file:
+2. Copy-and-paste the code below into the file.
+
+3. Save the file and open a console window in the same directly.
+
+4. Use the command below to compile the code (making sure that _dasm16.exe_ 
+is also in the same directory): `dasm16 -v -o HelloWorld.bin HelloWorld.asm`
+
+######Code:
 
 ```asm
 ; Assembler test for DCPU
@@ -262,16 +265,7 @@ and will be used as the input file during compilation.
 :end sub PC, 1
 ```
 
-3. Save the file and open a console window in the same directly.
-
-4. Use the command below to compile the code (making sure that _dasm16.exe_ 
-is also in the same directory):
-
-```
-dasm16 -v -o HelloWorld.bin HelloWorld.asm
-```
-
-5. The output that will appear in the console window should be similar to this:
+######Output:
 
 ```
 DASM16 1.0.1326 (rev. 7, Jun 27 2013, 20:24:38)
